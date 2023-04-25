@@ -1,0 +1,197 @@
+/* Project Notes - Colour Palette Generator
+
+CSS pseudo-elements
+A CSS pseudo-element is a keyword added to a selector that lets you style a specific part of the selected element(s). Pseudo-elements defined by a set of CSS specifications.
+Pseudo-elements act as if you had added a whole new HTML element into the markup, rather than applying a class to existing elements.
+Pseudo-elements start with a double colon ::
+- ::before and ::after are CSS pseudo elements. 
+- for an element to actually generate a ::before or ::after, its content must be something other than none.
+
+CSS pseudo-class
+A pseudo-class is a selector that selects elements that are in a specific state, e.g. they are the first element of their type, or they are being hovered over by the mouse pointer. 
+They tend to act as if you had applied a class to some part of your document, often helping you cut down on excess classes in your markup, and giving you more flexible, maintainable code.
+Pseudo-classes are keywords that start with a colon. For example, :hover is a pseudo-class.
+
+:root
+:root CSS pseudo-class matches the root element of a tree representing the document. 
+- In HTML, :root represents the <html> element and is identical to the selector html , except that its specificity is higher.
+
+Custom properties (--*): CSS variables
+Property names that are prefixed with --, like --example-name, represent custom properties that contain a value that can be used in other declarations using the var() function.
+- Eg. to create: "--primary: #D81E5D;" then to use: "background-color: var(--primary);"
+
+Margin property
+margin:0 auto; 0 is for top-bottom and auto for left-right. 
+It means that the left and right margin will take auto margin according to the width of the element and the width of the container. 
+Generally if you want to put any element at center position then margin:auto works perfectly.
+
+Inherit
+The inherit CSS keyword causes the element to take the computed value of the property from its parent element. It can be applied to any CSS property.
+Eg. font-size: inherit;
+
+CSS box-sizing behavior
+By default in the CSS box model, the width and height you assign to an element is applied only to the element's content box.
+- border-box: CSS property where the element's width and height properties include the content, padding, and border, but do not include the margin. 
+
+Display
+The display CSS property sets whether an element is treated as a block or inline element and the layout used for its children, such as flow layout, grid or flex.
+Grid layout enables an author to align elements into columns and rows.
+Create a grid container by declaring display: grid or display: inline-grid on an element. As soon as we do this, all direct children of that element become grid items.
+Fr: You can create a grid with fixed track sizes – using pixels for example. This sets the grid to the specified pixel which fits to the layout you desire. You can also create a grid using flexible sizes with percentages or with the fr unit designed for this purpose.
+fr unit represents a fraction of the available space in the grid container. The next grid definition would create three equal width tracks that grow and shrink according to the available space.
+Eg. grid-template-columns: 2fr 1fr 1fr; will look like ½, ¼, ¼ items across one row.
+
+CSS scalable units    
+- em is a CSS unit relative to the font size of the parent element.
+- rem is a CSS unit relative to the font size of an html element.
+
+*/
+
+:root {
+	--primary: #D81E5D;
+	--secondary: #8A4FFF;
+	--light: #EEE;
+	--grey: #AAA;
+	--dark: #1e2f42;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+	font-family: 'Fira Sans', sans-serif;
+}
+
+body {
+	background-color: var(--light);
+}
+
+main {
+	padding: 4rem 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+h1 {
+	color: var(--dark);
+	font-size: 1.5rem;
+	font-weight: 900;
+    text-align: center;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+}
+
+p {
+	color: var(--grey);
+	font-size: 1.125rem;
+	margin: 2rem auto;
+}
+
+.generator-button {
+	color: var(--primary);
+	font-size: inherit;
+	font-weight: 700;
+	background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+	-webkit-background-clip: text; /*Allows it to show the text with the gradient colour rather than a rectangular block of colour*/
+	-webkit-text-fill-color: transparent; /*Allows the gradient colour to show instead of being a solid red*/
+	transition: 0.4s ease-out;
+}
+
+.generator-button:hover {
+	padding-left: 0.5rem; 
+	padding-right: 0.5rem;
+}
+
+h2 {
+	color: var(--grey);
+	font-size: 1.5rem;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+}
+
+.colours {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr); /*doesn't need to be repeat. fr unit represents a fraction of the available space in the grid container- grow and shrink according to the available space.*/
+	grid-gap: 0.5rem;
+}
+
+.colour {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 1rem;
+	background-color: var(--dark);
+	color: #fff;
+	border-radius: 1rem;
+	transition: 0.4s ease-out;
+	border: 4px solid white; 
+}
+
+.colour.copied {
+	border: 4px solid red; /*border colour displayed as visual feedback when the copy button is pressed*/
+}
+
+/*button CSS rules reset to allow the gradient text to work*/
+button, input {
+	appearance: none;
+	background: none;
+	border: none;
+	outline: none;
+	color: inherit;
+}
+
+button {
+	user-select: none;
+	cursor: pointer;
+}
+
+.lock-toggle {
+	opacity: 0.5;
+	transition: 0.4s linear;
+}
+
+.lock-toggle.is-locked {
+	opacity: 1;
+}
+
+.colour-input {
+	text-align: center;
+    margin: 1rem auto;
+}
+
+@media (min-width: 768px) {
+	h1 {
+        font-size: 2rem;
+    }
+    
+    .colours {
+		grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .colours {
+		grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1rem;
+	}
+
+    /*makes the items stacked on top of each other when on a wider screen*/
+	.colour {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+	}
+
+	.colour-input {
+		margin: 2rem auto;
+	}
+}
